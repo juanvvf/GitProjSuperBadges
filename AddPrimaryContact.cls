@@ -1,0 +1,33 @@
+public with sharing class AddPrimaryContact implements Queueable {
+	
+	
+    public Contact objContato;
+    private String status;
+
+    		//construtor que recebe dois parametros, um Objetos Contact e o outro é uma String representando o Status
+	public AddPrimaryContact(Contact contatos, String sts) {
+		this.objContato = contatos;
+		this.status = sts;	
+
+	}
+
+	public void execute(QueueableContext context){
+			
+			//adicionando uma query de no maximo 200 Accounts que tem o billingstate = a string recebida pelo metodo AddPrimaryContact atribuida a status na lista de contas
+		List<Account> accounts = [select id from account where billingstate = :status LIMIT 200];
+
+		List<Contact> contatosLista = new List<Contact>();
+
+		for (Account conta : accounts){
+
+			//clonando o obejto Contact e atribuindo propiedades a ele.
+			Contact ctcClone = objContato.clone();
+			ctcClone.Id = null;
+			ctcClone.AccountId = conta.Id;
+			//adicionando o clone a lista de Contatos
+			contatosLista.add(ctcClone);
+	} 
+	insert contatosLista;
+
+}
+}
