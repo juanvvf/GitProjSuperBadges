@@ -1,2 +1,2 @@
 # GitProjSuperBadges
-Pasta ontem contem todos os arquivos da Org
+Pasta onde contem todos os arquivos da Org
